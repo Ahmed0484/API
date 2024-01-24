@@ -2,6 +2,7 @@
 using API.Models.DTO;
 using API.Repositories.Implementation;
 using API.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace API.Controllers
             _repo = repo;
         }
         [HttpPost]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> CreateCategory(CreateCategoryRequestDto request)
         {
             // Map DTO to Domain Model
@@ -82,6 +84,7 @@ namespace API.Controllers
         }
         [HttpPut]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> EditCategory([FromRoute] Guid id, UpdateCategoryRequestDto request)
         {
             // Convert DTO to Domain Model
@@ -112,6 +115,7 @@ namespace API.Controllers
 
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> DeleteCategory([FromRoute] Guid id)
         {
             var category = await _repo.DeleteAsync(id);
